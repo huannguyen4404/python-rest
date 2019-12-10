@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:10
+    volumes:
+      - ./server/db:/opt/backup
+    ports:
+      - "5432:5432"

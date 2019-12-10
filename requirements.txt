@@ -5,6 +5,7 @@ Django==3.0
 djangorestframework==3.10.3
 httpie==1.0.3
 idna==2.8
+psycopg2==2.8.4
 Pygments==2.5.2
 pytz==2019.3
 requests==2.22.0
