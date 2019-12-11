@@ -1,13 +1,13 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from games.models import Game, GameCategory, Player, PlayerScore
-import games.views
 
 
 class GameCategorySerializer(serializers.HyperlinkedModelSerializer):
     games = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='game-detail'
+        view_name='game-detail',
     )
 
     class Meta:
@@ -16,14 +16,20 @@ class GameCategorySerializer(serializers.HyperlinkedModelSerializer):
 
 
 class GameSerializer(serializers.HyperlinkedModelSerializer):
+    # We just want to display the owner username (read-only)
+    owner = serializers.ReadOnlyField(source='owner.username')
+    # We want to display the game cagory's name instead of the id
     game_category = serializers.SlugRelatedField(
         queryset=GameCategory.objects.all(),
-        slug_field='name'
+        slug_field='name',
     )
 
     class Meta:
         model = Game
-        fields = ('id', 'name', 'release_date', 'game_category', 'played')
+        fields = (
+            'url', 'name', 'release_date', 'played',
+            'owner', 'game_category',
+        )
 
 
 class ScoreSerializer(serializers.HyperlinkedModelSerializer):
@@ -41,7 +47,7 @@ class PlayerSerializer(serializers.HyperlinkedModelSerializer):
     gender = serializers.ChoiceField(choices=Player.GENDER_CHOICES)
     gender_description = serializers.CharField(
         source='get_gender_display',
-        read_only=True
+        read_only=True,
     )
 
     class Meta:
@@ -52,16 +58,30 @@ class PlayerSerializer(serializers.HyperlinkedModelSerializer):
 class PlayerScoreSerializer(serializers.ModelSerializer):
     player = serializers.SlugRelatedField(
         queryset=Player.objects.all(),
-        slug_field='name'
+        slug_field='name',
     )
     # We want to display the game's name instead of the id
     game = serializers.SlugRelatedField(
         queryset=Game.objects.all(),
-        slug_field='name'
+        slug_field='name',
     )
 
     class Meta:
         model = PlayerScore
         fields = (
-            'url', 'pk', 'score', 'score_date', 'player', 'game'
+            'url', 'pk', 'score', 'score_date', 'player', 'game',
         )
+
+
+class UserGameSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Game
+        fields = ('url', 'name')
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    games = UserGameSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('url', 'pk', 'username', 'games')
