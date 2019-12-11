@@ -6,4 +6,4 @@ services:
     volumes:
       - ./server/db:/opt/backup
     ports:
-      - "5432:5432"
+      - "5435:5432"

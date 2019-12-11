@@ -3,7 +3,7 @@ from games.models import Game, GameCategory, Player, PlayerScore
 import games.views
 
 
-class GameGategorySerializer(serializers.HyperlinkedModelSerializer):
+class GameCategorySerializer(serializers.HyperlinkedModelSerializer):
     games = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
