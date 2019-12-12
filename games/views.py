@@ -3,6 +3,8 @@ from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.throttling import ScopedRateThrottle
+
 from games.models import Game, GameCategory, PlayerScore, Player
 from games.serializers import (
     GameSerializer, GameCategorySerializer,
@@ -32,12 +34,16 @@ class ApiRoot(generics.GenericAPIView):
 class GameCategoryList(generics.ListCreateAPIView):
     queryset = GameCategory.objects.all()
     serializer_class = GameCategorySerializer
+    throttle_classes = (ScopedRateThrottle,)
+    throttle_scope = 'game-categories'
     name = 'gamecategory-list'
 
 
 class GameCategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = GameCategory.objects.all()
     serializer_class = GameCategorySerializer
+    throttle_classes = (ScopedRateThrottle,)
+    throttle_scope = 'game-categories'
     name = 'gamecategory-detail'
 
 
