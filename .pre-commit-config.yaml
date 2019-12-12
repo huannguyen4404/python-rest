@@ -1,0 +1,38 @@
+exclude: '^(.*migrations.*).*$'
+repos:
+  #- repo: https://github.com/FalconSocial/pre-commit-python-sorter
+  #  sha: 'b57843b0b874df1d16eb0bef00b868792cb245c2'
+  #  hooks:
+  #  - id: python-import-sorter
+  #    args: ['--diff', '--silent-overwrite']
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    sha: v1.1.1
+    hooks:
+      - id: check-ast
+      - id: check-merge-conflict
+      - id: check-xml
+      - id: double-quote-string-fixer
+      - id: fix-encoding-pragma
+        args: [--remove]
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-docstring-first
+      - id: check-json
+      - id: check-added-large-files
+      - id: check-yaml
+      - id: debug-statements
+      - id: flake8
+      - id: autopep8-wrapper
+      - id: requirements-txt-fixer
+  - repo: https://github.com/pre-commit/pre-commit
+    sha: v1.13.0
+    hooks:
+      - id: validate_manifest
+  - repo: https://github.com/asottile/pyupgrade
+    sha: v1.11.0
+    hooks:
+      - id: pyupgrade
+  - repo: https://github.com/asottile/add-trailing-comma
+    sha: v0.7.1
+    hooks:
+      - id: add-trailing-comma
