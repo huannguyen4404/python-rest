@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.db import models
 
 
@@ -16,7 +15,7 @@ class Game(models.Model):
     owner = models.ForeignKey(
         'auth.User',
         related_name='games',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=200, unique=True)
@@ -24,7 +23,7 @@ class Game(models.Model):
     game_category = models.ForeignKey(
         GameCategory,
         related_name='games',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     played = models.BooleanField(default=False)
 
@@ -47,7 +46,7 @@ class Player(models.Model):
     gender = models.CharField(
         max_length=2,
         choices=GENDER_CHOICES,
-        default=MALE
+        default=MALE,
     )
 
     class Meta:
@@ -61,11 +60,11 @@ class PlayerScore(models.Model):
     player = models.ForeignKey(
         Player,
         related_name='scores',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     game = models.ForeignKey(
         Game,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     score = models.IntegerField()
     score_date = models.DateTimeField()
